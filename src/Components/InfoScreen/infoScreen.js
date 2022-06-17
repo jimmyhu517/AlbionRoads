@@ -70,7 +70,7 @@ export class InfoScreen extends React.Component {
                <p>
                    本站搬运自：<a href='https://github.com/Nutarum/AlbionRoads' target='_blank' rel="noopener noreferrer">https://github.com/Nutarum/AlbionRoads</a>
                    <br/>
-                   如果有使用上的问题或者更好的建议，欢迎在游戏中私信“Asklepian”
+                   如果使用时发现BUG或者有更好的优化建议，欢迎在游戏中私信“Asklepian”
                 </p>
                
             </div>          

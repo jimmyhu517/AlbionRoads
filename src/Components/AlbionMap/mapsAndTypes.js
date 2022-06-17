@@ -781,4 +781,5 @@ export default
 ,{"displayname":"Setent-In-Qinsum","type":"TUNNEL_HIDEOUT"}
 ,{"displayname":"Settun-Al-Nusis","type":"TUNNEL_HIDEOUT_DEEP"}
 ,{"displayname":"Settun-In-Nusis","type":"TUNNEL_HIDEOUT_DEEP"}
+,{"displayname":"Anklesnag Mire","type":"OPENPVP_RED"}
 ]}

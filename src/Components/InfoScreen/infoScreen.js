@@ -21,66 +21,58 @@ export class InfoScreen extends React.Component {
             <div  className="textBlock">
                 <button className="smallBtn" onClick={()=>this.props.handleInfoClick()}> <Close className="iconDel" style={{ fontSize: 18 }}></Close> </button>
                 <br/>
-               <p className="centerText"><b >Albion road mapper, made by Nutarum.</b>    </p>
-               <br/>
-               <p className="centerText">This web uses no database, all the map information is stored in the exported and imported URL.   </p>
-                  
+               <p className="centerText"><b >阿瓦隆路线助手</b>    </p>
                <br/>
                <p>
-               <b>Updating info in a map:</b>    
+               <b>如何修改路线：</b>    
                <br/>
-               1) Load a URL with some map info
+               1) 使用他人分享的网址打开网页
                <br/>
-               2) Modify the map
+               2) 修改路线
                <br/>
-               3) Click the button 'Export to URL' and share the URL copied to your clipboard 
+               3) 点击“分享”按钮，重新生成分享链接，然后发送给其他人
                </p>
                <br/>
                <p >
-               <b>Adding new zones:</b>    
+               <b>如何添加新地区:</b>    
                <br/>
-               1) Type the zone name in the top text box
+               1) 在搜索框中输入关键字
                <br/>
-               2) Click the button 'Add Map'
+               2) 点击“增加地区”按钮
                <br/>
-               3) Mode the map around
-               <br/>
-               3) Change its type if needed using a control like this one  {"->"}   &nbsp;  
-                <select defaultValue={1} style={styleSelectmaptypeNode} name="select">
-                        <option value="0" >Home</option> 
-                        <option value="1" >Road</option> 
-                        <option value="2" >Road (HOs)</option>
-                        <option value="3" >Blue</option>
-                        <option value="4">Yellow</option>
-                        <option value="5">Red</option>
-                        <option value="6" >Black</option>
-                        <option value="7" >Undefined</option>                
-                        </select>
+               3) 拖拽地区到合适的位置
 
                </p>
                <br/>
                <p >
-               <b>Adding new portals:</b>    
+               <b>如何连接两个地区:</b>    
                <br/>
-               1) Click the arrow button  &nbsp;  
+               1) 点击其中一个地区上的箭头按钮  &nbsp;  
                <button className="smallBtnInfo2"> <ArrowUpward className="iconDel" style={{ fontSize: 18 }}></ArrowUpward> </button>
-               &nbsp;  on one of the two zones connected by the portal
+               &nbsp;  
                <br/>
-               2) Then click the arrow button &nbsp;  
+               2) 然后再点击另一个地区的箭头按钮 &nbsp;  
                <button className="smallBtnInfo2"> <ArrowUpward className="iconDel" style={{ fontSize: 18 }}></ArrowUpward> </button>
-               &nbsp;   on the other zone connected   
+               &nbsp;   
                <br/>
-               3) Change the portal size using a control like this one  {"->"} &nbsp;     
+               3) 修改传送门的类型  {"->"} &nbsp;     
                <select defaultValue={7} name="select">
-                    <option value="2" >2</option> 
-                    <option value="7" >7</option> 
-                    <option value="20" >20</option>           
+                    <option value="2" >绿门</option> 
+                    <option value="7" >蓝门</option> 
+                    <option value="20" >金门</option>           
                 </select>     
                 <br/>
-                4) Set the portal remaining time by clicking this button  &nbsp;  
+                4) 点击这个按钮  &nbsp;  
                 <button className="smallBtnInfo2"> <Sync className="iconDel" style={{ fontSize: 18 }}></Sync> </button>
-                &nbsp;  and typing the time in the format (hh:mm)
+                &nbsp;  来记录传送门的剩余时间
                </p>
+               <br/>
+               <p>
+                   本站搬运自：<a href='https://github.com/Nutarum/AlbionRoads' target='_blank' rel="noopener noreferrer">https://github.com/Nutarum/AlbionRoads</a>
+                   <br/>
+                   如果有使用上的问题或者更好的建议，欢迎在游戏中私信“Asklepian”
+                </p>
+               
             </div>          
         );
     }

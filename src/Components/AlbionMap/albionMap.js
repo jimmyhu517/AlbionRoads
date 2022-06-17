@@ -50,14 +50,14 @@ export class AlbionMap extends React.Component {
     }
 
     handleDeleteNode(nodeName) {
-        const found = this.state.NodeList.find(e => e["name"] === nodeName);
-        found["name"] = "";
+        const index = this.state.NodeList.findIndex(e => e["name"] === nodeName);
+        this.state.NodeList.splice(index, 1);
         this.forceUpdate();
     }
 
     handleDeleteRoad(fromName, toName) {
-        var found = this.state.RoadList.find(e => (e["from"] === fromName) && (e["to"] === toName));
-        found["from"] = "";
+        var index = this.state.RoadList.findIndex(e => (e["from"] === fromName) && (e["to"] === toName));
+        this.state.RoadList.splice(index, 1);
         this.forceUpdate();
     }
 
@@ -109,7 +109,7 @@ export class AlbionMap extends React.Component {
         if (this.state.newRoad === "") {
             this.setState({ newRoad: name });
         } else {
-            this.createNewRoad(new Date(0), this.state.newRoad, name, 7); //el time 0 se pondra como un NAN
+            this.createNewRoad(new Date(0), this.state.newRoad, name, '7'); //el time 0 se pondra como un NAN
             this.setState({ newRoad: "" });
         }
     }
@@ -169,6 +169,14 @@ export class AlbionMap extends React.Component {
 
 
     export() {
+        navigator.clipboard.writeText(this.getUrl()).then(function () {
+            alert("链接已复制到剪切板~")
+        }, function (err) {
+            console.error('Async: Could not copy text: ', err);
+        });
+    }
+
+    getUrl() {
         var firstparturl = window.location.href.split('&urlcode=')[0];
         var url = firstparturl + "&urlcode=" + JSON.stringify(this.state);
 
@@ -177,13 +185,102 @@ export class AlbionMap extends React.Component {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", tinyurllink, false); // false for synchronous request
         xmlHttp.send(null);
-        url = xmlHttp.responseText;
+        return xmlHttp.responseText;
+    }
 
-        navigator.clipboard.writeText(url).then(function () {
-            alert("URL copiada al portapapeles")
+    exportText() {
+        console.log(JSON.stringify(this.state));
+        var nodeNumMap = {};
+        var curNodeName;
+        //初始化节点连接数量
+        this.state.NodeList.forEach(e => {
+            if (e["name"] !== "") {
+                nodeNumMap[e["name"]] = 0;
+            }
+        });
+        //计算每个节点连接的数量
+        for(curNodeName in nodeNumMap) {
+            for(var e of this.state.RoadList){
+                if (e["from"] === curNodeName || e["to"] === curNodeName) {
+                    nodeNumMap[curNodeName] = nodeNumMap[curNodeName] + 1;
+                }
+            }
+        }
+        //检查：1、只能有两个端点。2、不能有环
+        var start,oneCount = 0;
+        for(curNodeName in nodeNumMap) {
+            if(nodeNumMap[curNodeName] === 1) {
+                oneCount ++;
+                if(oneCount > 2) {
+                    alert("不支持环形或者分支路线");
+                    return;
+                }
+                if(!start) {
+                    start = curNodeName;
+                }
+            } else if(nodeNumMap[curNodeName] > 2) {
+                alert("不支持环形或者分支路线");
+                return;
+            }
+
+        }
+        if(this.state.RoadList.length > 0 && oneCount === 0) {
+            alert("不支持环形路线");
+            return;
+        }
+        if(oneCount !== 2) {
+            alert("没有检测到路线");
+            return;
+        }
+        //计算路线
+        var path = this.draw(start, "【"+start+"】", start);
+        path += "\r\n-- 来自阿瓦隆路线助手["+window.location.href.split('&urlcode=')[0]+"]";
+        navigator.clipboard.writeText(path).then(function () {
+            alert("路线已复制到剪切板~")
         }, function (err) {
             console.error('Async: Could not copy text: ', err);
         });
+    }
+
+    draw(pointA, prePath, prePointA) {
+        var curRoad = this.state.RoadList.find(e =>((e["from"] === pointA && e["to"]!==prePointA) || (e["to"] === pointA && e["from"]!==prePointA)));
+        if(!curRoad) {
+            return prePath;
+        }
+        var pointB = curRoad["from"]===pointA?curRoad["to"]:curRoad["from"];
+        var color = curRoad["size"]==='2'?"绿":curRoad["size"]==='7'?"蓝":"金";
+        var time = this.getRemainTime(curRoad["time"]);
+        var path =  prePath + "--" + color + time + "-->【" + pointB + "】";
+        return this.draw(pointB, path, pointA);
+    }
+
+    getRemainTime(T) {
+        if(T === "a") {
+            return "";
+        }
+
+        var time = new Date(T);
+        var now = new Date();
+
+        if(time && time<now){
+            return "-已过期"; //el camino ya está cerrado
+        }
+
+        var diff = Math.abs(time - now);       
+
+        var ms = diff % 1000;
+        diff = (diff - ms) / 1000
+        var ss = diff % 60;
+        diff = (diff - ss) / 60
+        var mm = diff % 60;
+        diff = (diff - mm) / 60
+        var hh = diff;
+
+        if (isNaN(hh) || isNaN(mm) || isNaN(ss) || hh > 99) {
+            return "???"
+        }
+
+        return ("00" + hh).slice(-2) + ":" + ("00" + mm).slice(-2);
     }
 
     import() {
@@ -199,7 +296,7 @@ export class AlbionMap extends React.Component {
                 urlparam = this.replaceAll(urlparam, '%5D', ']');
             }
         } else {
-            this.createNewNode(600, 75, "Qiitun-Duosum", 0);
+            // this.createNewNode(600, 75, "Qiitun-Duosum", 0);
             return;
         }
         console.log(urlparam);
@@ -288,16 +385,16 @@ export class AlbionMap extends React.Component {
                 options={mapsAndtypes['maps']}                
                 getOptionLabel={(option) => option.displayname}
                 style={{ width: 200 }}
-                renderInput={(params) => <TextField {...params} label="Map name" variant="outlined" size="small"/>}
+                renderInput={(params) => <TextField {...params} label="地区名称" variant="outlined" size="small"/>}
                 />
                  &nbsp;
-                <button className="margin" id="addMapBtn" onClick={() => this.clickNewNode()}>Add map</button>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
-                <button className="margin" onClick={() => this.export()}>Export as URL</button>
+                <button className="margin" id="addMapBtn" onClick={() => this.clickNewNode()}>增加地区</button>
+                {/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+                <button className="margin" onClick={() => this.export()}>分享路线</button> */}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+                <button className="margin" onClick={() => this.exportText()}>生成路线</button>
 
                 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
-                <input className="margin" id="autoImport" placeholder="autoimport code"></input>  
-                <button className="margin" onClick={() => this.importCode()}>import code</button>
 
                 </Grid>
 

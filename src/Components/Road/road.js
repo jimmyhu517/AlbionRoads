@@ -114,7 +114,7 @@ export class Road extends React.Component {
     }
 
     delete() {
-        if (!window.confirm("Confirm delete")) {
+        if (!window.confirm("确定要删除吗？")) {
             return;            
         }
         this.props.handleDeleteRoad(this.props.from, this.props.to);
@@ -200,9 +200,9 @@ export class Road extends React.Component {
         }        
         
         var selectSize = <select defaultValue={this.props.size} onChange={this.onChange.bind(this)} name='select'>
-            <option value='2' >2</option>
-            <option value='7' >7</option>
-            <option value='20' >20</option>
+            <option value='2' >绿门</option>
+            <option value='7' >蓝门</option>
+            <option value='20' >金门</option>
             </select>;
    
         if(tRestante<0){           
@@ -273,7 +273,7 @@ export class Road extends React.Component {
                         }}
                     >
                         <form>
-                            <span>Remaining time:</span>
+                            <span>剩余时间:</span>
                             <input ref={(input) => { this.timeInput = input; }} autoComplete={"off"} onChange={this.formatTime.bind(this)} maxLength={5} id="timeInput" placeholder="hh:mm" style={{ width: 50 }}></input>
                             <br />
                             <button onClick={() => this.handleCloseModal(true)}>Ok</button> &nbsp;

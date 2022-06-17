@@ -89,7 +89,7 @@ export class Node extends React.Component {
     }
 
     delete() {
-        if (!window.confirm("Confirm delete")) {
+        if (!window.confirm("确定要删除吗？")) {
             return;
         }
         this.props.handleDeleteNode(this.props.name);
@@ -131,7 +131,7 @@ export class Node extends React.Component {
                     <div className={"box no-cursor node posAbsolute " + this.props.name} style={styleColors}>
                         <strong className="cursor">
                             <div>
-                                <select defaultValue={this.props.maptype} style={styleSelectmaptypeNode} onChange={this.onChange.bind(this)} name="select">
+                                <select defaultValue={this.props.maptype} style={styleSelectmaptypeNode} onChange={this.onChange.bind(this)} name="select" disabled>
                                     <option value="0" >Home</option>
                                     <option value="1" >Road</option>
                                     <option value="2" >Road (HOs)</option>

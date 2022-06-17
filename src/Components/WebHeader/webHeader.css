@@ -1,6 +1,6 @@
 .header{
     background-color: #a0d2eb;
-    height:23px;
+    height:30px;
     border-bottom: 1px solid #50829b;
 }
 .right{    
@@ -12,9 +12,26 @@
     height: 22px;
     width: 24px;
     float: right;   
+    margin-top: 4px;
 }
 .iconInfo{   
     margin-left:-7px;
     margin-top:-3px;
  
+}
+.github {
+    align-items: center;
+    line-height: 30px;
+    position: absolute;
+    right: 60px;
+    text-decoration: none;
+    display: inline-flex;
+    font-size: 20px;
+    font-family: BlinkMacSystemFont,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.github:link,.github:visited,.github:active {
+    color: #3b4d96;
+}
+.github .icon {
+    vertical-align: middle;
 }

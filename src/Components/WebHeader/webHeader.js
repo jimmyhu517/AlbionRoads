@@ -17,8 +17,12 @@ export class WebHeader extends React.Component {
       }
         return (            
             <div className="header">
-               <span style={{fontSize: 17}}><b>阿瓦隆路线助手</b></span>    
+               <span style={{fontSize: 19}}><b>阿瓦隆路线助手</b></span>    
                <span className="right">&nbsp;&nbsp;</span>   
+               <a  className='github' href="https://github.com/jimmyhu517/AlbionRoads/" target="_blank" rel="noopener noreferrer">
+                <img className='icon'  src="/github-menu-item.svg?v=1" alt='github'/>&nbsp;
+                <span>GitHub</span>
+                </a>
                <button className="btnInfo" onClick={()=>this.props.handleInfoClick()}> {icon} </button>                 
             </div>          
         );
